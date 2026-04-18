@@ -59,9 +59,21 @@ namespace DraftModeTOUM
             }
         }
         [MethodRpc((uint)DraftRpc.Recap)]
-        public static void RpcRecap(PlayerControl player)
+        public static void RpcRecap(PlayerControl player, bool show, Dictionary<int, string> entries)
         {
             // add recap rpc data here as fields!
+            if (!AmongUsClient.Instance.AmHost)
+            {
+                if (show)
+                {
+                    var recapEntries = new List<RecapEntry>();
+                    foreach (var pair in entries)
+                    {
+                        recapEntries.Add(new  RecapEntry(pair.Key, pair.Value));
+                    }
+                    DraftRecapOverlay.Show(recapEntries);
+                }
+            }
         }
         public static bool Prefix(PlayerControl __instance, byte callId, MessageReader reader)
         {
